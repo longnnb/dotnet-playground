@@ -3,15 +3,16 @@
 namespace CSharpFeatures.Csharp7;
 public class PatternMatching
 {
-    public void Demo()
+    public void GetSumOfIntValue()
     {
         object[] data = { 1, "two", 3, "four", 5 };
         int sum = 0;
         foreach (var item in data)
         {
-            if (item is int value) // parse and assign
+            // check if item is int and assign to value  
+            if (item is int intValue) 
             {
-                sum += value;
+                sum += intValue;
             }
         }
         WriteLine($"Sum of integers: {sum}");
@@ -21,11 +22,11 @@ public class PatternMatching
         {
             switch (item)
             {
-                case int value: // check and assign
-                    sum += value;
+                case int intValue: // check and assign
+                    sum += intValue;
                     break;
-                case string text: // check and assign
-                    WriteLine($"Text: {text}");
+                case string textValue: // check and assign
+                    WriteLine($"Text: {textValue}");
                     break;
             }
         }

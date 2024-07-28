@@ -3,16 +3,21 @@
 namespace CSharpFeatures.Csharp7;
 public class OutVariables
 {
-    public void Demo()
+    public void TryParseInt()
     {
         string input = "123";
-        if (int.TryParse(input, out int result)) // parse and assign
+        // try parse to int and assign to result
+        if (int.TryParse(input, out int result)) 
         {
             WriteLine(result);
         }
+
+        // what if the parse fails?
+        int.TryParse("abc", out var i);
+        WriteLine($"i = {i}"); // default value
     }
 
-    public void Demo2()
+    public void TryParseDateTime()
     {
         DateTime dt; // struct
         if (DateTime.TryParse("01/01/2017", out dt))
@@ -28,9 +33,5 @@ public class OutVariables
 
         // the scope of dt2 extends outside the if block
         WriteLine($"I can use dt2 here: {dt2}");
-
-        // what if the parse fails?
-        int.TryParse("abc", out var i);
-        WriteLine($"i = {i}"); // default value
     }
 }
