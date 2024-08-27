@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSharpFeatures", "CSharpFeatures\CSharpFeatures.csproj", "{E712B426-7C45-4459-9A6B-657A19D18A7F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSharpFeatures", "CSharpFeatures\CSharpFeatures.csproj", "{E712B426-7C45-4459-9A6B-657A19D18A7F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DesignPatterns", "DesignPatterns\DesignPatterns.csproj", "{D2BA5B5E-929E-476D-843A-2E165B209393}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DesignPatterns", "DesignPatterns\DesignPatterns.csproj", "{D2BA5B5E-929E-476D-843A-2E165B209393}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AsyncDisposable", "AsyncDisposable\AsyncDisposable.csproj", "{0C49141C-82AF-4D26-91BF-E19BE916712E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{D2BA5B5E-929E-476D-843A-2E165B209393}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D2BA5B5E-929E-476D-843A-2E165B209393}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D2BA5B5E-929E-476D-843A-2E165B209393}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0C49141C-82AF-4D26-91BF-E19BE916712E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0C49141C-82AF-4D26-91BF-E19BE916712E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0C49141C-82AF-4D26-91BF-E19BE916712E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0C49141C-82AF-4D26-91BF-E19BE916712E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

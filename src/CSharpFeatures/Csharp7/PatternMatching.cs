@@ -9,7 +9,7 @@ public class PatternMatching
         int sum = 0;
         foreach (var item in data)
         {
-            if (item is int value) // parse and assign
+            if (item is int value) // check and assign
             {
                 sum += value;
             }
