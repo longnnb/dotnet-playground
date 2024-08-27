@@ -9,9 +9,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DesignPatterns", "DesignPat
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AsyncDisposable", "AsyncDisposable\AsyncDisposable.csproj", "{0C49141C-82AF-4D26-91BF-E19BE916712E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OptionsPattern", "OptionsPattern\OptionsPattern.csproj", "{5103D581-E4DE-4AAB-BF16-F59A2F298B53}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OptionsPattern", "OptionsPattern\OptionsPattern.csproj", "{5103D581-E4DE-4AAB-BF16-F59A2F298B53}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DependencyInjection", "DependencyInjection\DependencyInjection.csproj", "{D3F52F40-964A-48F3-A6A4-E1846B7D5223}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DependencyInjection", "DependencyInjection\DependencyInjection.csproj", "{D3F52F40-964A-48F3-A6A4-E1846B7D5223}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ThreadSynchronization", "ThreadSynchronization\ThreadSynchronization.csproj", "{25BA6F8F-FD93-4C94-977A-CDA00B15CF28}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{D3F52F40-964A-48F3-A6A4-E1846B7D5223}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D3F52F40-964A-48F3-A6A4-E1846B7D5223}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D3F52F40-964A-48F3-A6A4-E1846B7D5223}.Release|Any CPU.Build.0 = Release|Any CPU
+		{25BA6F8F-FD93-4C94-977A-CDA00B15CF28}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{25BA6F8F-FD93-4C94-977A-CDA00B15CF28}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{25BA6F8F-FD93-4C94-977A-CDA00B15CF28}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{25BA6F8F-FD93-4C94-977A-CDA00B15CF28}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
