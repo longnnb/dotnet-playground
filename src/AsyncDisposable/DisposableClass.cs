@@ -1,20 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace AsyncDisposable;
-internal class DisposableClass : IDisposable, IAsyncDisposable
+﻿namespace AsyncDisposable;
+internal class DisposableClass(string name = "") : IDisposable, IAsyncDisposable
 {
     public void Dispose()
     {
-        Console.WriteLine("Dispose called");
+        Console.WriteLine($"Dispose called from class {name}");
     }
 
     public async ValueTask DisposeAsync()
     {
-        //await Task.Delay(1000);
-        Console.WriteLine("DisposeAsync called");
+        await Task.Delay(100);
+        Console.WriteLine($"DisposeAsync called from class {name}");
     }
 }
