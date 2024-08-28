@@ -28,5 +28,21 @@
                 semaphore.Release();
             }
         }
+
+        public async Task DoWorkWithSemaphoreAsync()
+        {
+            Console.WriteLine($"Thread {Thread.CurrentThread.ManagedThreadId} waiting for semaphore signal...");
+            await semaphore.WaitAsync();
+            try
+            {
+                Console.WriteLine($"Thread {Thread.CurrentThread.ManagedThreadId} Working...");
+                await Task.Delay(2000);
+                Console.WriteLine($"Thread {Thread.CurrentThread.ManagedThreadId} Work done.");
+            }
+            finally
+            {
+                semaphore.Release();
+            }
+        }
     }
 }
