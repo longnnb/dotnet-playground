@@ -2,7 +2,7 @@
 
 public class Kata
 {
-    public static int[] Divisors(int n)
+    public static int[]? Divisors(int n)
     {
         //prime
         if (n <= 3) return null;

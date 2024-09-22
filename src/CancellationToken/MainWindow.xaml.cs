@@ -35,7 +35,7 @@ public partial class MainWindow : Window
             btnCancel.IsEnabled = false;
             txtReport.Text = "Done";
         }
-        catch (OperationCanceledException ex)
+        catch (OperationCanceledException)
         {
             txtReport.Text = "Cancelled";
         }

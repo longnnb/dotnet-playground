@@ -19,6 +19,6 @@ public class MyService
             return await response.Content.ReadAsStringAsync();
         }
 
-        return null;
+        return string.Empty;
     }
 }
