@@ -1,4 +1,5 @@
 ﻿namespace Challenges;
+
 public class ListFilterer
 {
     public static IEnumerable<int> GetIntegersFromList(List<object> listOfItems)

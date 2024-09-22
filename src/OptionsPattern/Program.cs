@@ -1,18 +1,18 @@
-﻿
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 
 namespace TestOption;
 
-class Program
+internal class Program
 {
     private static IServiceScope scope;
-    static void Main(string[] args)
+
+    private static void Main(string[] args)
     {
         Console.WriteLine("Hello, World!");
-        HostApplicationBuilder builder = Host.CreateApplicationBuilder(args);
+        var builder = Host.CreateApplicationBuilder(args);
         //builder.Configuration.AddJsonFile("appsettings.json");
         //builder.Services.ConfigureOptions<MyServiceOptionsConfigurer>();
         //builder.Services.Configure<MyServiceOptions>(builder.Configuration.GetSection(nameof(MyServiceOptions)));
@@ -29,7 +29,7 @@ class Program
         //builder.Services.AddConfiguredServiceFromConfiguration();
         //builder.Services.AddConfiguredServiceFromDatabase();
 
-        using IHost host = builder.Build();
+        using var host = builder.Build();
 
         // var config = host.Services.GetService<IConfiguration>();
         // var op = config?.GetSection("MyServiceOptions");
@@ -61,7 +61,6 @@ class Program
         //    service4?.PrintOptions();
         //    CallService();
         //}
-
     }
 
     private static void CallService()
@@ -71,44 +70,9 @@ class Program
     }
 }
 
-public class MyServiceOptions
-{
-    public string ConnectionString { get; set; }
-    public int Timeout { get; set; } = 30;
-    public int IntValue { get; set; } = 50;
-    public string StringValue { get; set; }
-    public bool BoolValue { get; set; }
-}
-
-public interface IMyService
-{
-    void PrintOptions();
-}
-
-public class MyService : IMyService
-{
-    private readonly MyServiceOptions _options;
-    private readonly Guid guid = Guid.NewGuid();
-
-    //public MyService(IOptions<MyServiceOptions> options)
-    //{
-    //    _options = options.Value;
-    //}
-
-    public void PrintOptions()
-    {
-        Console.WriteLine($"Service: {guid}");
-        //Console.WriteLine($"ConnectionString: {_options.ConnectionString}");
-        //Console.WriteLine($"Timeout: {_options.Timeout}");
-        //Console.WriteLine($"IntValue: {_options.IntValue}");
-        //Console.WriteLine($"StringValue: {_options.StringValue}");
-        //Console.WriteLine($"BoolValue: {_options.BoolValue}");
-    }
-}
-
 public class MyServiceOptionsConfigurer : IConfigureOptions<MyServiceOptions>
 {
-    private IConfiguration configuration;
+    private readonly IConfiguration configuration;
 
     public MyServiceOptionsConfigurer(IConfiguration configuration)
     {
@@ -123,7 +87,7 @@ public class MyServiceOptionsConfigurer : IConfigureOptions<MyServiceOptions>
 
 public class MyServiceOptionsDatabaseConfigurer : IConfigureOptions<MyServiceOptions>
 {
-    private IDataService dataService;
+    private readonly IDataService dataService;
 
     public MyServiceOptionsDatabaseConfigurer(IDataService dataService)
     {
@@ -139,7 +103,8 @@ public class MyServiceOptionsDatabaseConfigurer : IConfigureOptions<MyServiceOpt
 
 public static class MyServiceExtensions
 {
-    public static IServiceCollection AddConfiguredService(this IServiceCollection services, Action<MyServiceOptions> configureOptions)
+    public static IServiceCollection AddConfiguredService(this IServiceCollection services,
+        Action<MyServiceOptions> configureOptions)
     {
         // Configure the options using the provided action
         services.Configure(configureOptions);
@@ -209,28 +174,16 @@ public class DataService : IDataService
     }
 }
 
-
-
 public class Exercise
 {
     public static int FindMax(int[,] numbers)
     {
-        if (numbers.GetLength(0) == 0 || numbers.GetLength(1) == 0)
-        {
-            return -1;
-        }
-        int max = numbers[0, 0];
-        for (int i = 0; i < numbers.GetLength(0); i++)
-        {
-            for (int j = 0; j < numbers.GetLength(1); j++)
-            {
-                if (numbers[i, j] > max)
-                {
-                    max = numbers[i, j];
-                }
-            }
-        }
+        if (numbers.GetLength(0) == 0 || numbers.GetLength(1) == 0) return -1;
+        var max = numbers[0, 0];
+        for (var i = 0; i < numbers.GetLength(0); i++)
+        for (var j = 0; j < numbers.GetLength(1); j++)
+            if (numbers[i, j] > max)
+                max = numbers[i, j];
         return max;
     }
 }
-

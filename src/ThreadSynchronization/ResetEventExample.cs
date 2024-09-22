@@ -2,8 +2,8 @@
 {
     public class ResetEventExample
     {
-        private readonly ManualResetEvent manualResetEvent = new ManualResetEvent(false);
-        private readonly AutoResetEvent autoResetEvent = new AutoResetEvent(true);
+        private readonly AutoResetEvent autoResetEvent = new(true);
+        private readonly ManualResetEvent manualResetEvent = new(false);
 
         public void WriteWithManualResetEvent()
         {
@@ -17,7 +17,7 @@
         public void ReadWithManualResetEvent()
         {
             Console.WriteLine($"Thread {Thread.CurrentThread.ManagedThreadId} waiting for reading...");
-            manualResetEvent.WaitOne();  // wait until state = true
+            manualResetEvent.WaitOne(); // wait until state = true
             Console.WriteLine($"Thread {Thread.CurrentThread.ManagedThreadId} reading...");
             Thread.Sleep(500);
             Console.WriteLine($"Thread {Thread.CurrentThread.ManagedThreadId} reading completed.");

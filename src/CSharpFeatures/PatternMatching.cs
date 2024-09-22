@@ -1,25 +1,21 @@
 ﻿using static System.Console;
 
 namespace CSharpFeatures;
+
 public class PatternMatching
 {
     public void GetSumOfIntValue()
     {
         object[] data = { 1, "two", 3, "four", 5 };
-        int sum = 0;
+        var sum = 0;
         foreach (var item in data)
-        {
             // check if item is int and assign to value  
             if (item is int intValue)
-            {
                 sum += intValue;
-            }
-        }
         WriteLine($"Sum of integers: {sum}");
 
         // switch statement
         foreach (var item in data)
-        {
             switch (item)
             {
                 case int intValue: // check and assign
@@ -29,7 +25,7 @@ public class PatternMatching
                     WriteLine($"Text: {textValue}");
                     break;
             }
-        }
+
         WriteLine($"Sum of integers: {sum}");
     }
 
@@ -39,7 +35,6 @@ public class PatternMatching
         if (shape is Rectangle)
         {
             var rc = (Rectangle)shape;
-
         }
         else if (shape is Circle)
         {
@@ -79,13 +74,10 @@ public class PatternMatching
                 break;
         }
     }
-
 }
-
 
 public class Shape
 {
-
 }
 
 public class Rectangle : Shape

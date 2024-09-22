@@ -3,13 +3,16 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:CancellationTest"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <Button Content="Start" HorizontalAlignment="Left" Margin="326,274,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click"/>
-        <ProgressBar x:Name="progressBar" HorizontalAlignment="Left" Height="20" Margin="326,182,0,0" VerticalAlignment="Top" Width="200"/>
-        <TextBlock Text="Progress" x:Name="txtReport"  HorizontalAlignment="Left" Height="20" Margin="403,217,0,0" VerticalAlignment="Top" />
-        <Button x:Name="btnCancel" IsEnabled="False" Content="Cancel" HorizontalAlignment="Left" Margin="451,274,0,0" VerticalAlignment="Top" Width="75" Click="Cancel_Button_Click" RenderTransformOrigin="0.514,0.82" />
+        <Button Content="Start" HorizontalAlignment="Left" Margin="326,274,0,0" VerticalAlignment="Top" Width="75"
+                Click="Button_Click" />
+        <ProgressBar x:Name="progressBar" HorizontalAlignment="Left" Height="20" Margin="326,182,0,0"
+                     VerticalAlignment="Top" Width="200" />
+        <TextBlock Text="Progress" x:Name="txtReport" HorizontalAlignment="Left" Height="20" Margin="403,217,0,0"
+                   VerticalAlignment="Top" />
+        <Button x:Name="btnCancel" IsEnabled="False" Content="Cancel" HorizontalAlignment="Left" Margin="451,274,0,0"
+                VerticalAlignment="Top" Width="75" Click="Cancel_Button_Click" RenderTransformOrigin="0.514,0.82" />
     </Grid>
 </Window>

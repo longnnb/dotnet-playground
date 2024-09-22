@@ -36,9 +36,9 @@
 
         var semaphoreExample = new SemaphoreExample();
 
-        for (int i = 0; i < 5; i++)
+        for (var i = 0; i < 5; i++)
         {
-            Thread t = new Thread(semaphoreExample.DoWorkWithSemaphore);
+            var t = new Thread(semaphoreExample.DoWorkWithSemaphore);
             t.Start();
         }
     }

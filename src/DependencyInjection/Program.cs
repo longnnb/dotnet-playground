@@ -3,17 +3,18 @@ using Microsoft.Extensions.Hosting;
 
 namespace TestOption;
 
-class Program
+internal class Program
 {
     private static IServiceScope scope;
-    static void Main(string[] args)
+
+    private static void Main(string[] args)
     {
-        HostApplicationBuilder builder = Host.CreateApplicationBuilder(args);
+        var builder = Host.CreateApplicationBuilder(args);
 
         builder.Services.AddScoped<ScopedService>();
         builder.Services.AddScoped<SingletonService>();
 
-        using IHost host = builder.Build();
+        using var host = builder.Build();
 
         var scopedService1 = host.Services.GetRequiredService<ScopedService>();
         scopedService1?.PrintGuid();
@@ -37,6 +38,7 @@ class Program
             var scopedService2 = scope.ServiceProvider.GetRequiredService<ScopedService>();
             scopedService2?.PrintGuid();
         }
+
         var scopedService5 = host.Services.GetRequiredService<ScopedService>();
         scopedService5?.PrintGuid();
         Console.ReadLine();
@@ -46,6 +48,7 @@ class Program
 public class ScopedService
 {
     private readonly Guid guid = Guid.NewGuid();
+
     public void PrintGuid()
     {
         Console.WriteLine($"Scoped: {guid}");
@@ -55,6 +58,7 @@ public class ScopedService
 public class SingletonService
 {
     public readonly ScopedService scopedService;
+
     public SingletonService(ScopedService scopedService)
     {
         this.scopedService = scopedService;

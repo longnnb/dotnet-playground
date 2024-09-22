@@ -5,9 +5,9 @@ namespace Decorator;
 
 internal class Program
 {
-    static void Main(string[] args)
+    private static void Main(string[] args)
     {
-        HostApplicationBuilder builder = Host.CreateApplicationBuilder(args);
+        var builder = Host.CreateApplicationBuilder(args);
 
         // Register the original service
         builder.Services.AddTransient<IMyService, MyService>();
@@ -16,13 +16,12 @@ internal class Program
         builder.Services.Decorate<IMyService, MyServiceDecorator>();
         builder.Services.Decorate<IMyService, AnotherMyServiceDecorator>();
 
-        using IHost host = builder.Build();
-        
+        using var host = builder.Build();
+
         var myservice = host.Services.GetRequiredService<IMyService>();
         myservice.Execute();
     }
 }
-
 
 public interface IMyService
 {
@@ -80,4 +79,3 @@ public class AnotherMyServiceDecorator : IMyService
         Console.WriteLine("After executing in AnotherMyServiceDecorator");
     }
 }
-
