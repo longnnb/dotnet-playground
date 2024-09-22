@@ -1,6 +1,7 @@
 ﻿using System.Globalization;
 
 namespace Challenges;
+
 public static class Jaden
 {
     public static string ToJadenCase(this string phrase)

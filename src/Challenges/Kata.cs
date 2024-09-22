@@ -1,4 +1,5 @@
 ﻿namespace Challenges;
+
 public class Kata
 {
     public static int[] Divisors(int n)
@@ -49,7 +50,6 @@ public class Kata
 
         //consice
         return Convert.ToString(a + b, 2);
-
     }
 
     public static int CountBits(int n)
@@ -78,7 +78,8 @@ public class Kata
 
     public static char FindMissingLetter(char[] array)
     {
-        return (char)Enumerable.Range(array.First(), array.Last() - array.First() + 1).FirstOrDefault(x => !array.Contains((char)x));
+        return (char)Enumerable.Range(array.First(), array.Last() - array.First() + 1)
+            .FirstOrDefault(x => !array.Contains((char)x));
         //return Enumerable.Range(array[0], array.Length + 1).Select(a => (char)a).Except(array).Single();
     }
 }

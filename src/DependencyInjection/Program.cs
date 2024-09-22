@@ -3,7 +3,7 @@ using Microsoft.Extensions.Hosting;
 
 namespace DependencyInjection;
 
-class Program
+internal class Program
 {
     // private static IServiceScope scope;
 
@@ -26,7 +26,7 @@ class Program
         builder.Services.AddScoped<ScopedService>();
         builder.Services.AddSingleton<SingletonService>();
 
-        using IHost host = builder.Build();
+        using var host = builder.Build();
 
         // var scopedService1 = host.Services.GetRequiredService<ScopedService>();
         // scopedService1?.PrintGuid();

@@ -2,7 +2,7 @@
 {
     public class LockExample
     {
-        private readonly object lockObj = new object();
+        private readonly object lockObj = new();
 
         public void DoWorkWithLock()
         {
@@ -33,7 +33,6 @@
         public void DoWorkWithTryEnter()
         {
             if (Monitor.TryEnter(lockObj))
-            {
                 try
                 {
                     Console.WriteLine($"Thread {Thread.CurrentThread.ManagedThreadId} Working...");
@@ -44,11 +43,8 @@
                 {
                     Monitor.Exit(lockObj);
                 }
-            }
             else
-            {
                 Console.WriteLine($"Thread {Thread.CurrentThread.ManagedThreadId} Failed to acquire lock.");
-            }
-        }        
+        }
     }
 }

@@ -3,11 +3,11 @@
 namespace CancellationTest;
 
 /// <summary>
-/// Interaction logic for MainWindow.xaml
+///     Interaction logic for MainWindow.xaml
 /// </summary>
 public partial class MainWindow : Window
 {
-    CancellationTokenSource? _tokenSource = null;
+    private CancellationTokenSource? _tokenSource;
 
     public MainWindow()
     {
@@ -16,8 +16,11 @@ public partial class MainWindow : Window
 
     private async void Button_Click(object sender, RoutedEventArgs e)
     {
-        _tokenSource = new CancellationTokenSource();
+        //cancellation token with optional timeout
+        var timeout = TimeSpan.FromSeconds(2);
+        _tokenSource = new CancellationTokenSource(timeout);
         var token = _tokenSource.Token;
+        
 
         var progress = new Progress<int>(value =>
         {
@@ -42,17 +45,15 @@ public partial class MainWindow : Window
         }
     }
 
-    void Loop(IProgress<int> progress, CancellationToken token = default)
+    private void Loop(IProgress<int> progress, CancellationToken token = default)
     {
-        for (int i = 0; i < 100; i++)
+        for (var i = 0; i < 100; i++)
         {
             if (token.IsCancellationRequested)
-            {
                 //progress.Report(0);
                 //return;
                 // may do some cleanup here
                 token.ThrowIfCancellationRequested();
-            }
 
 
             progress.Report(i);

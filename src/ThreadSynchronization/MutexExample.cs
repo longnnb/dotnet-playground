@@ -2,7 +2,7 @@
 {
     public class MutexExample
     {
-        private readonly Mutex mutex = new Mutex(false, "MutexExample");
+        private readonly Mutex mutex = new(false, "MutexExample");
 
         public void DoWorkWithMutex()
         {

@@ -46,7 +46,7 @@ Finally block
 Normal result
  */
 
-/* 
+/*
  * Error output
 Using block 1
 Dispose called from class 1
