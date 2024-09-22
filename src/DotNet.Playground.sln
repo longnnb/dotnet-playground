@@ -21,6 +21,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CancellationToken", "Cancel
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Decorator", "Decorator\Decorator.csproj", "{7A5622B3-B539-48AA-9032-F382A45EB4A1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HttpClientTest", "HttpClientTest\HttpClientTest.csproj", "{E989D202-693B-496E-917B-6FCEF4208404}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -63,6 +65,10 @@ Global
 		{7A5622B3-B539-48AA-9032-F382A45EB4A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7A5622B3-B539-48AA-9032-F382A45EB4A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7A5622B3-B539-48AA-9032-F382A45EB4A1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E989D202-693B-496E-917B-6FCEF4208404}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E989D202-693B-496E-917B-6FCEF4208404}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E989D202-693B-496E-917B-6FCEF4208404}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E989D202-693B-496E-917B-6FCEF4208404}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

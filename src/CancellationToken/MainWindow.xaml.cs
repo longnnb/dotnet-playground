@@ -16,8 +16,11 @@ public partial class MainWindow : Window
 
     private async void Button_Click(object sender, RoutedEventArgs e)
     {
-        _tokenSource = new CancellationTokenSource();
+        //cancellation token with optional timeout
+        var timeout = TimeSpan.FromSeconds(2);
+        _tokenSource = new CancellationTokenSource(timeout);
         var token = _tokenSource.Token;
+        
 
         var progress = new Progress<int>(value =>
         {

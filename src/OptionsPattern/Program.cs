@@ -61,9 +61,11 @@ internal class Program
         service?.PrintOptions();
 
         // test configuration
-        var config = host.Services.GetService<IConfiguration>();
-        var op = config?.GetSection("MyServiceOptions").Get<MyServiceOptions>();
-        var test = config?.GetValue<string>("Test");
+        // var config = host.Services.GetService<IConfiguration>();
+        // var op = config?.GetSection("MyServiceOptions").Get<MyServiceOptions>();
+        // Console.WriteLine($"ConnectionString: {op?.ConnectionString}");
+        // var test = config?.GetValue<string>("Test");
+        // Console.WriteLine($"Test: {test}");
     }
 }
 
