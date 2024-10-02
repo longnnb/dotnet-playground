@@ -29,7 +29,7 @@ class Program
         });
 
         // Typed HttpClient
-        services.AddHttpClient<MyService>()
+        services.AddHttpClient<IMyService, MyService>()
             .ConfigurePrimaryHttpMessageHandler<ProxyHttpClientHandler>()
             .AddHttpMessageHandler<LoggingHandler>();
 

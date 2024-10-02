@@ -1,6 +1,11 @@
 namespace HttpClientTest;
 
-public class MyService
+public interface IMyService
+{
+    Task<string> GetDataAsync();
+}
+
+public class MyService : IMyService
 {
     private readonly HttpClient _httpClient;
 
