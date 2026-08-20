@@ -16,7 +16,7 @@
 
         public void ReadWithManualResetEvent()
         {
-            Console.WriteLine($"Thread {Thread.CurrentThread.ManagedThreadId} waiting for reading...");
+            Console.WriteLine($"Thread  {Thread.CurrentThread.ManagedThreadId} waiting for reading...");
             manualResetEvent.WaitOne(); // wait until state = true
             Console.WriteLine($"Thread {Thread.CurrentThread.ManagedThreadId} reading...");
             Thread.Sleep(500);

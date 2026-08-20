@@ -5,6 +5,8 @@ namespace HttpClientTest;
 public interface IFhirService
 {
     Task<Bundle> GetPatients();
-    Task<Patient> GetPatient(string id);
+    Task<TResource> GetResource<TResource>(string patientId) where TResource : Resource;
     Task<Patient> CreatePatient();
+
+    Task<Resource> UpdatePatient(string patientId);
 }

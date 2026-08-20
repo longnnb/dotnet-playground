@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using System.Text.Json;
 using Hl7.Fhir.Model;
 using Hl7.Fhir.Rest;
 using Microsoft.Extensions.DependencyInjection;
@@ -20,14 +21,26 @@ class Program
 
         var fhirService = host.Services.GetRequiredService<IFhirService>();
 
-        var data = await fhirService.GetPatient("45069285");
-        Console.WriteLine(data.Name[0].Family);
+        var data = await fhirService.GetResource<Resource>("45077913");
+        Console.WriteLine(JsonSerializer.Serialize(data));
+        // var data = await fhirService.UpdatePatient("45069285");
+        // Console.WriteLine(JsonSerializer.Serialize(data));
+        // var data1 = await fhirService.GetResource<Patient>("45069287");
+        // Console.WriteLine(JsonSerializer.Serialize(data1));
+        // var data2 = await fhirService.GetResource<Patient>("example");
+        // Console.WriteLine(JsonSerializer.Serialize(data2));
         // var response = await fhirService.GetPatients() as Bundle;
         // // fhirService.GetPatient("example");
         // Console.WriteLine(response.Total);
         // Console.WriteLine(response.Entry.Count);
         // Console.WriteLine(response.Entry[0].Resource.TypeName);
-        await fhirService.CreatePatient();
+        // var patient = await fhirService.CreatePatient();
+        // Console.WriteLine(JsonSerializer.Serialize(patient));
+        
+        //45077913
+        //45077914
+        //45077915
+        //45077916
     }
 
     public static void ConfigureServices(IServiceCollection services)
