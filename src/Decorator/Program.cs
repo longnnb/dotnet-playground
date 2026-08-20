@@ -1,81 +1,48 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
+using Decorator.Demos;
 
 namespace Decorator;
 
-internal class Program
+/// <summary>
+/// Entry point. With no arguments, runs every demo in this project in order; pass one or more
+/// demo names to run only those, or <c>--list</c> to print the available names, e.g.
+/// <c>dotnet run --project Decorator -- open-generic</c>.
+/// </summary>
+internal static class Program
 {
-    private static void Main(string[] args)
+    private static readonly Dictionary<string, Func<Task>> Demos = new(StringComparer.OrdinalIgnoreCase)
     {
-        var builder = Host.CreateApplicationBuilder(args);
+        ["scrutor-decorate"] = ScrutorDecorateDemo.RunAsync,
+        ["manual-decorate"] = ManualDecorateDemo.RunAsync,
+        ["open-generic"] = OpenGenericDecorateDemo.RunAsync,
+        ["assembly-scan"] = AssemblyScanDemo.RunAsync,
+    };
 
-        // Register the original service
-        builder.Services.AddTransient<IMyService, MyService>();
-
-        // Decorate the service using Scrutor
-        builder.Services.Decorate<IMyService, MyServiceDecorator>();
-        builder.Services.Decorate<IMyService, AnotherMyServiceDecorator>();
-
-        using var host = builder.Build();
-
-        var myservice = host.Services.GetRequiredService<IMyService>();
-        myservice.Execute();
-    }
-}
-
-public interface IMyService
-{
-    void Execute();
-}
-
-public class MyService : IMyService
-{
-    public void Execute()
+    private static async Task Main(string[] args)
     {
-        Console.WriteLine("Executing MyService");
-    }
-}
+        if (args is ["--list"])
+        {
+            foreach (var name in Demos.Keys)
+            {
+                Console.WriteLine(name);
+            }
 
-public class MyServiceDecorator : IMyService
-{
-    private readonly IMyService _innerService;
+            return;
+        }
 
-    public MyServiceDecorator(IMyService innerService)
-    {
-        _innerService = innerService;
-    }
+        var namesToRun = args.Length == 0 ? [.. Demos.Keys] : args;
 
-    public void Execute()
-    {
-        // Pre-execution logic
-        Console.WriteLine("Before executing MyService");
+        foreach (var name in namesToRun)
+        {
+            if (!Demos.TryGetValue(name, out var run))
+            {
+                Console.Error.WriteLine($"Unknown demo '{name}'. Try --list.");
+                Environment.ExitCode = 1;
+                continue;
+            }
 
-        // Call the original service
-        _innerService.Execute();
-
-        // Post-execution logic
-        Console.WriteLine("After executing MyService");
-    }
-}
-
-public class AnotherMyServiceDecorator : IMyService
-{
-    private readonly IMyService _innerService;
-
-    public AnotherMyServiceDecorator(IMyService innerService)
-    {
-        _innerService = innerService;
-    }
-
-    public void Execute()
-    {
-        // Pre-execution logic
-        Console.WriteLine("Before executing in AnotherMyServiceDecorator");
-
-        // Call the original service
-        _innerService.Execute();
-
-        // Post-execution logic
-        Console.WriteLine("After executing in AnotherMyServiceDecorator");
+            Console.WriteLine($"===== {name} =====");
+            await run();
+            Console.WriteLine();
+        }
     }
 }
