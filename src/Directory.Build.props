@@ -20,16 +20,23 @@
         <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
         <AnalysisLevel>latest-recommended</AnalysisLevel>
 
-        <!-- Turned on in the final phase of the rewrite, once the pre-existing warnings in code
-             that's being replaced are gone. Flipping this on too early breaks the build on
-             unrelated debt instead of on the change actually being reviewed. -->
-        <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+        <!-- The compiler is the only automated safety net a repo with no test projects has, so
+             it's turned all the way up: every warning is a build error. -->
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
 
         <!-- CA1848 ("use LoggerMessage delegates for high-performance logging") and CA1873
              ("expensive argument evaluation for a possibly-disabled log level") are correct
              guidance for production hot paths; in these demos they're just noise on every
-             Console/ILogger call, none of which is ever on a hot path. -->
-        <NoWarn>$(NoWarn);CA1848;CA1873</NoWarn>
+             Console/ILogger call, none of which is ever on a hot path.
+
+             CA1859 ("use the concrete type instead of the interface for improved performance")
+             and CA1822 ("member does not access instance data, mark it static") actively fight
+             what several of these projects are teaching: DesignPatterns and Decorator declare
+             variables typed as an abstraction on purpose (that's the pattern), and their example
+             services are instance methods on purpose (a real InventoryService/PaymentService
+             would hold instance state like a DB connection; that these toy versions don't need
+             any is an artifact of being a demo, not a reason to make the methods static). -->
+        <NoWarn>$(NoWarn);CA1848;CA1873;CA1859;CA1822</NoWarn>
     </PropertyGroup>
 
 </Project>
