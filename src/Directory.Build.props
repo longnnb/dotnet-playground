@@ -25,10 +25,11 @@
              unrelated debt instead of on the change actually being reviewed. -->
         <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
 
-        <!-- CA1848 ("use LoggerMessage delegates for high-performance logging") is correct
-             guidance for production hot paths; in these demos it's just noise on every
-             Console/ILogger call. -->
-        <NoWarn>$(NoWarn);CA1848</NoWarn>
+        <!-- CA1848 ("use LoggerMessage delegates for high-performance logging") and CA1873
+             ("expensive argument evaluation for a possibly-disabled log level") are correct
+             guidance for production hot paths; in these demos they're just noise on every
+             Console/ILogger call, none of which is ever on a hot path. -->
+        <NoWarn>$(NoWarn);CA1848;CA1873</NoWarn>
     </PropertyGroup>
 
 </Project>

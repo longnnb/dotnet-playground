@@ -1,242 +1,113 @@
-﻿using System.Net;
-using System.Text;
 using Hl7.Fhir.Model;
 using Hl7.Fhir.Rest;
-using Hl7.Fhir.Serialization;
-using Task = System.Threading.Tasks.Task;
 
 namespace HttpClientTest;
 
-public class FhirService : IFhirService
+/// <summary>
+/// Talks to the public FHIR test server at hapi.fhir.org using the Firely .NET SDK's
+/// <see cref="FhirClient"/>. <see cref="CreateClient"/> builds one <see cref="FhirClient"/> per
+/// call instead of the <see cref="FhirClientSettings"/> block that used to be duplicated
+/// verbatim in all four methods here, and the two cross-cutting request headers this project
+/// used to set by hand in every method now live in <see cref="Handlers.FhirHeadersHandler"/>.
+/// </summary>
+/// <remarks>
+/// hapi.fhir.org is a shared public test server maintained by the FHIR community: reads are
+/// always safe, and writes (<see cref="CreateNewPatientAsync"/>, <see cref="UpdatePatientAsync"/>)
+/// are expected and accepted there -- but they add data other people can see, so the demo
+/// dispatcher treats them as opt-in rather than part of the default run (see
+/// <see cref="Demos.FhirDemos"/>).
+/// </remarks>
+public class FhirService(IHttpClientFactory httpClientFactory) : IFhirService
 {
-    IHttpClientFactory _fhirHttpClientFactory;
-    
-    public FhirService(IHttpClientFactory fhirHttpClientFactory)
-    {
-        _fhirHttpClientFactory = fhirHttpClientFactory;
-    }
-    
-    public async Task<Bundle> GetPatients()
+    private const string BaseUrl = "https://hapi.fhir.org/baseR4";
+
+    private FhirClient CreateClient()
     {
         var settings = new FhirClientSettings
         {
             PreferredFormat = ResourceFormat.Json,
             VerifyFhirVersion = false, // avoids calling /metadata on every request
-            PreferredParameterHandling = SearchParameterHandling.Lenient
+            PreferredParameterHandling = SearchParameterHandling.Lenient,
         };
-        
-        var httpclient = _fhirHttpClientFactory.CreateClient("FhirHttpClient");
-        httpclient.DefaultRequestHeaders.Add("x-random-header", Guid.NewGuid().ToString());
-        httpclient.DefaultRequestHeaders.Add("x-method-name", "get patients");
-        
-        var endpoint = "https://hapi.fhir.org/baseR4/Patient";
-        var fhirClient = new FhirClient(endpoint, httpclient, settings);
-        
-        var response = await fhirClient.OperationAsync(new Uri(endpoint), useGet: true);
-        
-        return response as Bundle;
+
+        var httpClient = httpClientFactory.CreateClient("FhirHttpClient");
+        return new FhirClient(BaseUrl, httpClient, settings);
     }
-    
-    public async Task<TResource> GetResource<TResource>(string patientId) where TResource : Resource
+
+    /// <inheritdoc />
+    public async Task<Bundle> SearchPatientsAsync(int count = 5, CancellationToken cancellationToken = default)
     {
-        var settings = new FhirClientSettings
-        {
-            PreferredFormat = ResourceFormat.Json,
-            VerifyFhirVersion = false, // avoids calling /metadata on every request
-            PreferredParameterHandling = SearchParameterHandling.Lenient
-        };
-        
-        var httpclient = _fhirHttpClientFactory.CreateClient("FhirHttpClient");
-        httpclient.DefaultRequestHeaders.Add("x-random-header", Guid.NewGuid().ToString());
-        httpclient.DefaultRequestHeaders.Add("x-method-name", "get patient");
-        var endpoint = $"https://hapi.fhir.org/baseR4/Patient/{patientId}";
-        
-        using var fhirClient = new FhirClient(endpoint, httpclient, settings);
-        
+        using var fhirClient = CreateClient();
+        var searchParams = new SearchParams { Count = count };
+
+        var bundle = await fhirClient.SearchAsync<Patient>(searchParams, ct: cancellationToken);
+        return bundle ?? throw new InvalidOperationException("Search returned no bundle.");
+    }
+
+    /// <inheritdoc />
+    public async Task<TResource> ReadResourceAsync<TResource>(string id, CancellationToken cancellationToken = default)
+        where TResource : Resource
+    {
+        using var fhirClient = CreateClient();
+
         try
         {
-            // Read a Patient resource (use an existing Patient ID from the server)
-            //string patientId = "example"; // Replace with an actual Patient ID
-             var response = await fhirClient.OperationAsync(new Uri(endpoint), useGet: true);
-
-             if (response is TResource resource)
-             {
-                 return resource;
-             }
-            
-             throw new InvalidOperationException($"Invalid Resource Type (Request: {typeof(TResource)} - Response: {response.GetType()})");
+            var resource = await fhirClient.ReadAsync<TResource>($"{typeof(TResource).Name}/{id}", ct: cancellationToken);
+            return resource ?? throw new InvalidOperationException($"Read returned no {typeof(TResource).Name}.");
         }
         catch (FhirOperationException ex)
         {
-            Console.WriteLine($"Error: {ex.Message}");
-            throw;
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Error: {ex.Message}");
-            var operationOutcome = new OperationOutcome
-            {
-                Issue = new List<OperationOutcome.IssueComponent>
-                {
-                    new()
-                    {
-                        Severity = OperationOutcome.IssueSeverity.Error,
-                        Code = OperationOutcome.IssueType.Exception,
-                        Diagnostics = ex.Message
-                    }
-                }
-            };
-
-            throw new FhirOperationException("FHIR Operation Error", HttpStatusCode.InternalServerError,
-                operationOutcome);
-        }
-    }
-    
-    public async Task<Resource> UpdatePatient(string patientId)
-    {
-        var settings = new FhirClientSettings
-        {
-            PreferredFormat = ResourceFormat.Json,
-            VerifyFhirVersion = false, // avoids calling /metadata on every request
-            PreferredParameterHandling = SearchParameterHandling.Lenient
-        };
-        
-        var httpclient = _fhirHttpClientFactory.CreateClient("FhirHttpClient");
-        httpclient.DefaultRequestHeaders.Add("x-random-header", Guid.NewGuid().ToString());
-        httpclient.DefaultRequestHeaders.Add("x-method-name", "update patient");
-        var endpoint = $"https://hapi.fhir.org/baseR4/";
-        
-        using var fhirClient = new FhirClient(endpoint, httpclient, settings);
-        
-        try
-        {
-            var patient = await GetResource<Patient>(patientId);
-            
-            patient.Name = new List<HumanName>
-            {
-                new HumanName
-                {
-                    Family = "Nguyen Super 123123",
-                    Given = new[] { "Test test Long" }
-                }
-            };
-            
-            var parameters = new Parameters();
-            parameters.Add("resource", patient);
-            
-            // Update the Patient resource
-            var updatedPatient = await fhirClient.OperationAsync(new Uri("https://hapi.fhir.org/baseR4/Patient/45069285"), parameters);
-            
-            return updatedPatient;
-        }
-        catch (FhirOperationException ex)
-        {
-            Console.WriteLine($"Error: {ex.Message}");
+            Console.WriteLine($"FHIR error reading {typeof(TResource).Name}/{id}: {ex.Message}");
             throw;
         }
     }
 
-    public async Task<Patient> CreatePatient()
+    /// <inheritdoc />
+    public async Task<Patient> CreateNewPatientAsync(CancellationToken cancellationToken = default)
     {
-        var settings = new FhirClientSettings
-        {
-            PreferredFormat = ResourceFormat.Json,
-            VerifyFhirVersion = false, // avoids calling /metadata on every request
-            PreferredParameterHandling = SearchParameterHandling.Lenient
-        };
-        
-        var httpclient = _fhirHttpClientFactory.CreateClient("FhirHttpClient");
-        httpclient.DefaultRequestHeaders.Add("x-random-header", Guid.NewGuid().ToString());
-        httpclient.DefaultRequestHeaders.Add("x-method-name", "get patient");
-        var endpoint = $"https://hapi.fhir.org/baseR4/Patient";
-        
-        //var fhirClient = new FhirClient(endpoint, httpclient, settings);
-        
-        // Create a new Patient resource
+        using var fhirClient = CreateClient();
+
+        // A unique identifier per call, not just fixed demo data: hapi.fhir.org detects and
+        // rejects a Create whose content duplicates an existing resource, so two calls to this
+        // method with identical data back to back (as the fhir-create and fhir-update demos do
+        // in the same run) would otherwise fail the second one with HAPI-2840.
         var newPatient = new Patient
         {
-            Name = new List<HumanName>
-            {
-                new HumanName
-                {
-                    Family = "Nguyen 123",
-                    Given = new[] { "Long 456", "yoyo" }
-                }
-            },
+            Identifier = [new Identifier("https://dotnet-playground.local/demo-patients", Guid.NewGuid().ToString())],
+            Name = [new HumanName { Family = "Nguyen", Given = ["Long"] }],
             Gender = AdministrativeGender.Male,
             BirthDate = "1980-01-01",
-            Address = new List<Address>
-            {
+            Address =
+            [
                 new Address
                 {
-                    Line = new[] { "123 Main St" },
+                    Line = ["123 Main St"],
                     City = "Somewhere",
                     State = "NY",
                     PostalCode = "12345",
-                    Country = "USA"
-                }
-            }
+                    Country = "USA",
+                },
+            ],
         };
 
-        try
-        {
-            // // Post the Patient resource to the server
-            // var createdPatient = await fhirClient.CreateAsync(newPatient);
-            //
-            // // var createdPatient = await fhirClient.OperationAsync(new Uri($"{endpoint}/Patient/$validate"), newPatient as Parameters, useGet: false);
-            //
-            // // Print the ID of the created Patient
-            // Console.WriteLine($"Created Patient ID: {createdPatient.Id}");
-            //
-            // return createdPatient;
-            
-            var resourcePayload = new FhirJsonSerializer().SerializeToString(newPatient);
-            var content = new StringContent(resourcePayload, Encoding.UTF8, "application/fhir+json");
+        var created = await fhirClient.CreateAsync(newPatient, ct: cancellationToken);
+        return created ?? throw new InvalidOperationException("Create returned no Patient.");
+    }
 
-            using var requestMessage = new HttpRequestMessage(HttpMethod.Post, endpoint)
-            {
-                Content = content
-            };
+    /// <inheritdoc />
+    public async Task<Patient> UpdatePatientAsync(string id, CancellationToken cancellationToken = default)
+    {
+        using var fhirClient = CreateClient();
 
-            var response = await httpclient.SendAsync(requestMessage);
+        var patient = await fhirClient.ReadAsync<Patient>($"Patient/{id}", ct: cancellationToken)
+            ?? throw new InvalidOperationException($"Read returned no Patient/{id}.");
+        patient.Name = [new HumanName { Family = "Nguyen-Updated", Given = ["Long"] }];
 
-            if (response.IsSuccessStatusCode)
-            {
-                var responseContent = await response.Content.ReadAsStringAsync();
-                var consent = await new FhirJsonParser().ParseAsync<Consent>(responseContent);
-                var resource = await new FhirJsonParser().ParseAsync<Patient>(responseContent);
-                return resource;
-            }
-            else
-            {
-                var responseContent = await response.Content.ReadAsStringAsync();
-                var operationOutcome = await  new FhirJsonParser().ParseAsync<OperationOutcome>(responseContent);
-                throw new FhirOperationException("FHIR Operation Error", response.StatusCode, operationOutcome);
-            }
-        }
-        catch (FhirOperationException ex)
-        {
-            Console.WriteLine($"Error: {ex.Message}");
-            return new Patient();
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Error: {ex.Message}");
-            var operationOutcome = new OperationOutcome
-            {
-                Issue = new List<OperationOutcome.IssueComponent>
-                {
-                    new()
-                    {
-                        Severity = OperationOutcome.IssueSeverity.Error,
-                        Code = OperationOutcome.IssueType.Exception,
-                        Diagnostics = ex.Message
-                    }
-                }
-            };
-
-            throw new FhirOperationException("FHIR Operation Error", HttpStatusCode.InternalServerError,
-                operationOutcome);
-        }
+        // UpdateAsync builds the request URL from the resource's own Id -- unlike an earlier
+        // version of this method, which fetched `id` but then always PUT to a hardcoded
+        // ".../Patient/45069285", silently updating the wrong record whenever the argument
+        // wasn't exactly that one id.
+        var updated = await fhirClient.UpdateAsync(patient, ct: cancellationToken);
+        return updated ?? throw new InvalidOperationException($"Update returned no Patient/{id}.");
     }
 }
