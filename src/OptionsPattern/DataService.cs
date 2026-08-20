@@ -1,6 +1,6 @@
-using System.Globalization;
+﻿using System.Globalization;
 
-namespace TestOption;
+namespace OptionsPattern;
 
 public class DataService : IDataService
 {

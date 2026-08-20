@@ -1,6 +1,6 @@
-using Microsoft.Extensions.Options;
+﻿using Microsoft.Extensions.Options;
 
-namespace TestOption;
+namespace OptionsPattern;
 
 public class MyService : IMyService
 {

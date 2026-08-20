@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace CancellationTest;
+namespace CancellationTokenWpf;
 
 /// <summary>
 ///     Interaction logic for MainWindow.xaml

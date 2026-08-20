@@ -17,7 +17,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ThreadSynchronization", "Th
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Challenges", "Challenges\Challenges.csproj", "{0FCB5A71-3F9A-4E5B-8EBA-8D4BFE2D4537}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CancellationToken", "CancellationToken\CancellationToken.csproj", "{421E72DF-42FF-4F91-8163-A43609706342}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CancellationTokenWpf", "CancellationTokenWpf\CancellationTokenWpf.csproj", "{421E72DF-42FF-4F91-8163-A43609706342}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Decorator", "Decorator\Decorator.csproj", "{7A5622B3-B539-48AA-9032-F382A45EB4A1}"
 EndProject

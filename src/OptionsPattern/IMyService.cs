@@ -1,4 +1,4 @@
-namespace TestOption;
+﻿namespace OptionsPattern;
 
 public interface IMyService
 {
