@@ -5,4 +5,8 @@
         <TargetFramework>$(PlaygroundTfm)</TargetFramework>
     </PropertyGroup>
 
+    <ItemGroup>
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
+    </ItemGroup>
+
 </Project>
