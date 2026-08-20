@@ -2,9 +2,7 @@
 
     <PropertyGroup>
         <OutputType>WinExe</OutputType>
-        <TargetFramework>net8.0-windows</TargetFramework>
-        <Nullable>enable</Nullable>
-        <ImplicitUsings>enable</ImplicitUsings>
+        <TargetFramework>$(PlaygroundTfm)-windows</TargetFramework>
         <UseWPF>true</UseWPF>
     </PropertyGroup>
 

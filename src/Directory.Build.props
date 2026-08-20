@@ -1,0 +1,34 @@
+<Project>
+
+    <PropertyGroup>
+        <!-- Single knob for the whole playground. Each csproj writes
+             <TargetFramework>$(PlaygroundTfm)</TargetFramework> (or "$(PlaygroundTfm)-windows"
+             for the WPF project) explicitly, rather than this file setting TargetFramework
+             directly. That keeps every csproj self-describing and lets the WPF project stay
+             coupled to the one shared value instead of hardcoding a parallel literal. -->
+        <PlaygroundTfm>net10.0</PlaygroundTfm>
+
+        <LangVersion>14.0</LangVersion>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+
+        <!-- Activates CS1591 (missing XML doc on a publicly visible member). Combined with
+             TreatWarningsAsErrors below, this makes documentation a build requirement instead
+             of a good intention: the only automated enforcement available in a repo with no
+             test projects. -->
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+        <AnalysisLevel>latest-recommended</AnalysisLevel>
+
+        <!-- Turned on in the final phase of the rewrite, once the pre-existing warnings in code
+             that's being replaced are gone. Flipping this on too early breaks the build on
+             unrelated debt instead of on the change actually being reviewed. -->
+        <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+
+        <!-- CA1848 ("use LoggerMessage delegates for high-performance logging") is correct
+             guidance for production hot paths; in these demos it's just noise on every
+             Console/ILogger call. -->
+        <NoWarn>$(NoWarn);CA1848</NoWarn>
+    </PropertyGroup>
+
+</Project>
