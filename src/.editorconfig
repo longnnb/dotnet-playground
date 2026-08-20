@@ -1,0 +1,46 @@
+root = true
+
+# NOTE: severities below are "warning", not "error". They become hard build errors together,
+# uniformly, once Directory.Build.props flips TreatWarningsAsErrors to true in the final phase
+# of the rewrite -- setting individual rules to "error" here would make them unconditional
+# build breaks even while the rest of the repo is still being brought up to these conventions.
+
+[*.cs]
+charset = utf-8
+end_of_line = crlf
+indent_style = space
+indent_size = 4
+
+# --- namespaces ---
+csharp_style_namespace_declarations = file_scoped:warning
+dotnet_style_namespace_match_folder = true:warning
+
+# --- private fields must be _camelCase ---
+dotnet_naming_rule.private_fields_underscored.severity = warning
+dotnet_naming_rule.private_fields_underscored.symbols  = private_fields
+dotnet_naming_rule.private_fields_underscored.style    = underscore_camel
+
+dotnet_naming_symbols.private_fields.applicable_kinds           = field
+dotnet_naming_symbols.private_fields.applicable_accessibilities = private
+
+dotnet_naming_style.underscore_camel.required_prefix = _
+dotnet_naming_style.underscore_camel.capitalization  = camel_case
+
+# --- braces required (catches braceless `if` bodies that read as bugs) ---
+csharp_prefer_braces = true:warning
+
+# --- unused usings (GenerateDocumentationFile must be true for IDE0005 to fire during build) ---
+dotnet_diagnostic.IDE0005.severity = warning
+
+# --- unused/never-read locals and pattern variables ---
+dotnet_diagnostic.IDE0059.severity = warning
+
+# --- fields that are never assigned (catches the never-assigned-because-the-ctor-is-
+#     commented-out class of bug) ---
+dotnet_diagnostic.CS0649.severity = warning
+
+[*.{xaml,json,xml,config,props,targets}]
+charset = utf-8
+end_of_line = crlf
+indent_style = space
+indent_size = 2

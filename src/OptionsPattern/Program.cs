@@ -1,101 +1,55 @@
-﻿using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Options;
+using OptionsPattern.Demos;
 
-namespace TestOption;
+namespace OptionsPattern;
 
-internal class Program
+/// <summary>
+/// Entry point. With no arguments, runs every demo in this project in order; pass one or more
+/// demo names to run only those, or <c>--list</c> to print the available names, e.g.
+/// <c>dotnet run --project OptionsPattern -- async-configuration</c>.
+/// </summary>
+internal static class Program
 {
-    private static IServiceScope scope;
-
-    private static void Main(string[] args)
+    private static readonly Dictionary<string, Func<Task>> Demos = new(StringComparer.OrdinalIgnoreCase)
     {
-        var builder = Host.CreateApplicationBuilder(args);
-        //builder.Configuration.AddJsonFile("appsettings.json");
+        ["bind-from-json"] = BindFromJsonDemo.RunAsync,
+        ["bind-configuration"] = BindConfigurationDemo.RunAsync,
+        ["configure-options"] = ConfigureOptionsDemo.RunAsync,
+        ["configure-options-data-service"] = ConfigureOptionsDataServiceDemo.RunAsync,
+        ["configure-with-dependency"] = ConfigureWithDependencyDemo.RunAsync,
+        ["configure-from-data-service"] = ConfigureFromDataServiceDemo.RunAsync,
+        ["options-provider"] = OptionsProviderDemo.RunAsync,
+        ["configure-action"] = ConfigureActionDemo.RunAsync,
+        ["validation"] = ValidationDemo.RunAsync,
+        ["snapshot-vs-monitor"] = SnapshotVsMonitorDemo.RunAsync,
+        ["async-configuration"] = AsyncConfigurationDemo.RunAsync,
+    };
 
-        // get from appsettings.json
-        //builder.Services.Configure<MyServiceOptions>(builder.Configuration.GetSection(nameof(MyServiceOptions)));
-        //builder.Services.AddOptions<MyServiceOptions>().BindConfiguration("MyServiceOptions"); ;
-
-        // add with IConfigureOptions<TOptions>
-        //builder.Services.ConfigureOptions<MyServiceOptionsConfigurer>();
-        //builder.Services.ConfigureOptions<MyServiceOptionsDatabaseConfigurer>();
-
-        // add with provider
-        // builder.Services.AddSingleton<IOptions<MyServiceOptions>>(serviceProvider =>
-        // {
-        //     var config = serviceProvider.GetService<IConfiguration>();
-        //     var options = new MyServiceOptions();
-        //     config?.GetSection(nameof(MyServiceOptions)).Bind(options);
-        //     return Options.Create(options);
-        // });
-
-        // add using action
-        // builder.Services.Configure<MyServiceOptions>(options =>
-        // {
-        //     options.ConnectionString = "Custom Connection from Action<TOptions>";
-        //     options.Timeout = 20;
-        // });
-        //
-        // add with dependency
-        // builder.Services.AddOptions<MyServiceOptions>().Configure<IConfiguration>((options, configuration) =>
-        // {
-        //     configuration.GetSection(nameof(MyServiceOptions)).Bind(options);
-        // });
-
-        // add with dependency (from external source)
-        // async not working
-        builder.Services.AddOptions<MyServiceOptions>().Configure<IDataService>((options, dataService) =>
+    private static async Task Main(string[] args)
+    {
+        if (args is ["--list"])
         {
-            options.ConnectionString = dataService.GetConnectionString();
-            options.Timeout = dataService.GetTimeout();
-        });
+            foreach (var name in Demos.Keys)
+            {
+                Console.WriteLine(name);
+            }
 
-        builder.Services.AddScoped<IDataService, DataService>();
-        builder.Services.AddScoped<IMyService, MyService>();
-        using var host = builder.Build();
+            return;
+        }
 
-        // test service
-        var service = host.Services.GetService<IMyService>();
-        service?.PrintOptions();
+        var namesToRun = args.Length == 0 ? [.. Demos.Keys] : args;
 
-        // test configuration
-        // var config = host.Services.GetService<IConfiguration>();
-        // var op = config?.GetSection("MyServiceOptions").Get<MyServiceOptions>();
-        // Console.WriteLine($"ConnectionString: {op?.ConnectionString}");
-        // var test = config?.GetValue<string>("Test");
-        // Console.WriteLine($"Test: {test}");
-    }
-}
+        foreach (var name in namesToRun)
+        {
+            if (!Demos.TryGetValue(name, out var run))
+            {
+                Console.Error.WriteLine($"Unknown demo '{name}'. Try --list.");
+                Environment.ExitCode = 1;
+                continue;
+            }
 
-public class MyServiceOptionsConfigurer : IConfigureOptions<MyServiceOptions>
-{
-    private readonly IConfiguration configuration;
-
-    public MyServiceOptionsConfigurer(IConfiguration configuration)
-    {
-        this.configuration = configuration;
-    }
-
-    public void Configure(MyServiceOptions options)
-    {
-        configuration.GetSection(nameof(MyServiceOptions)).Bind(options);
-    }
-}
-
-public class MyServiceOptionsDatabaseConfigurer : IConfigureOptions<MyServiceOptions>
-{
-    private readonly IDataService dataService;
-
-    public MyServiceOptionsDatabaseConfigurer(IDataService dataService)
-    {
-        this.dataService = dataService;
-    }
-
-    public void Configure(MyServiceOptions options)
-    {
-        options.ConnectionString = dataService.GetConnectionString();
-        options.Timeout = dataService.GetTimeout();
+            Console.WriteLine($"===== {name} =====");
+            await run();
+            Console.WriteLine();
+        }
     }
 }

@@ -15,17 +15,17 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DependencyInjection", "Depe
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ThreadSynchronization", "ThreadSynchronization\ThreadSynchronization.csproj", "{25BA6F8F-FD93-4C94-977A-CDA00B15CF28}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Challenges", "Challenges\Challenges.csproj", "{0FCB5A71-3F9A-4E5B-8EBA-8D4BFE2D4537}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Challenges", "Challenges\Challenges.csproj", "{0FCB5A71-3F9A-4E5B-8EBA-8D4BFE2D4537}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CancellationToken", "CancellationToken\CancellationToken.csproj", "{421E72DF-42FF-4F91-8163-A43609706342}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CancellationTokenWpf", "CancellationTokenWpf\CancellationTokenWpf.csproj", "{421E72DF-42FF-4F91-8163-A43609706342}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Decorator", "Decorator\Decorator.csproj", "{7A5622B3-B539-48AA-9032-F382A45EB4A1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Decorator", "Decorator\Decorator.csproj", "{7A5622B3-B539-48AA-9032-F382A45EB4A1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HttpClientTest", "HttpClientTest\HttpClientTest.csproj", "{E989D202-693B-496E-917B-6FCEF4208404}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HttpClientTest", "HttpClientTest\HttpClientTest.csproj", "{E989D202-693B-496E-917B-6FCEF4208404}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Design Pattern", "Design Pattern", "{A9781B22-3FB3-45B4-BD4E-A43DBD5AF61A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cryptography", "Cryptography\Cryptography.csproj", "{91AC3CEF-9A31-4EBC-8B05-1C3AC9D3335B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cryptography", "Cryptography\Cryptography.csproj", "{91AC3CEF-9A31-4EBC-8B05-1C3AC9D3335B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
