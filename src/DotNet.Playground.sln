@@ -27,6 +27,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Design Pattern", "Design Pa
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cryptography", "Cryptography\Cryptography.csproj", "{91AC3CEF-9A31-4EBC-8B05-1C3AC9D3335B}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CollectionTypes", "CollectionTypes\CollectionTypes.csproj", "{B43E16D7-61DF-4EC5-835A-1E86F9426FDC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -77,6 +79,10 @@ Global
 		{91AC3CEF-9A31-4EBC-8B05-1C3AC9D3335B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{91AC3CEF-9A31-4EBC-8B05-1C3AC9D3335B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{91AC3CEF-9A31-4EBC-8B05-1C3AC9D3335B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B43E16D7-61DF-4EC5-835A-1E86F9426FDC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B43E16D7-61DF-4EC5-835A-1E86F9426FDC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B43E16D7-61DF-4EC5-835A-1E86F9426FDC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B43E16D7-61DF-4EC5-835A-1E86F9426FDC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

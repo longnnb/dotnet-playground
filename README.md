@@ -24,6 +24,7 @@ There are no test projects — the compiler is the safety net instead (`TreatWar
 | [`CancellationTokenWpf`](src/CancellationTokenWpf) | `CancellationTokenSource` with timeout + manual cancel (WPF app) |
 | [`Challenges`](src/Challenges) | Codewars-style katas, with alternative implementations compared side by side |
 | [`CSharpFeatures`](src/CSharpFeatures) | Pattern matching, `out` variables, list patterns, tuples |
+| [`CollectionTypes`](src/CollectionTypes) | `List`/`Dictionary`/`HashSet` internals, ordered & concurrent collections, immutable & frozen, collection expressions, custom `IEnumerable` |
 | [`Cryptography`](src/Cryptography) | RSA, AES-GCM, hashing, X509 certificates, PEM |
 | [`Decorator`](src/Decorator) | The decorator pattern via Scrutor, plus assembly scanning |
 | [`DependencyInjection`](src/DependencyInjection) | Service lifetimes, the captive-dependency problem, keyed services |
